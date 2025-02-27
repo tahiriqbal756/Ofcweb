@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Login</title>
+    <title>HACKING WEB</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -19,7 +19,7 @@
             flex-direction: column; 
         }
 
-        /* Dialog Box */
+        /* Dialog Overlay */
         .dialogOverlay { 
             position: fixed; 
             top: 0; left: 0; 
@@ -35,29 +35,39 @@
 
         /* Animated Dialog Box */
         .dialogBox { 
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1); 
-            background-size: 300% 300%;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4); 
+            background-size: 200% 200%;
             animation: gradientAnimation 4s infinite alternate, popIn 0.5s ease-in-out; 
             color: black; 
             padding: 20px; 
             border-radius: 10px; 
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5); 
-            width: 300px;
-            max-height: 400px;
-            overflow-y: auto;
         }
 
-        /* Buttons */
-        .dialogBox button { 
+        /* Scrollable Dialog for Buttons */
+        .scrollableBox {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* Input Fields */
+        .dialogBox input { 
+            width: 100%; padding: 10px; margin-bottom: 10px; 
+            border: 1px solid #ddd; border-radius: 5px; 
+        }
+
+        /* Animated Buttons */
+        .dialogBox button, .btn { 
             width: 100%; padding: 10px; 
             background: linear-gradient(45deg, #ff416c, #ff4b2b); 
             color: white; border: none; border-radius: 5px; cursor: pointer; 
             font-size: 16px; 
-            margin: 5px 0;
-            animation: buttonGlow 2s infinite alternate; 
+            animation: pulse 1.5s infinite, buttonGlow 2s infinite alternate; 
+            margin-bottom: 5px;
         }
 
-        .dialogBox button:hover { background: #ff1e56; }
+        .dialogBox button:hover, .btn:hover { background: #ff1e56; }
 
         /* Show Dialog */
         .show { visibility: visible !important; opacity: 1 !important; }
@@ -65,73 +75,102 @@
         /* Animations */
         @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes buttonGlow { 0% { box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3); } 100% { box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); } }
-        @keyframes backgroundAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
         @keyframes gradientAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes backgroundAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
     </style>
 </head>
-<body onload="startTimer()">
+<body onload="startTimer(); showLoginDialog()">
 
     <!-- Login Dialog -->
     <div id="loginDialog" class="dialogOverlay show">
         <div class="dialogBox">
             <h2>Enter Password</h2>
-            <p class="timer" id="countdown">60</p>
             <input type="password" id="password" placeholder="Enter Password">
             <button onclick="checkPassword()">Login</button>
+            <button class="btn" onclick="openWhatsAppDialog()">WhatsApp Contact</button>
+            <p id="errorMsg"></p>
+            <p id="timer" style="color: red; font-weight: bold;"></p>
         </div>
     </div>
 
-    <!-- Post Login Dialog Box -->
+    <!-- WhatsApp Contact Dialog -->
+    <div id="whatsappDialog" class="dialogOverlay">
+        <div class="dialogBox">
+            <h2>Contact via WhatsApp</h2>
+            <input type="text" id="firstName" placeholder="First Name">
+            <input type="text" id="lastName" placeholder="Last Name">
+            <input type="tel" id="phone" placeholder="Phone Number">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="message" placeholder="Your Message">
+            <button onclick="sendWhatsAppMessage()">Send to WhatsApp</button>
+            <button onclick="closeWhatsAppDialog()">Close</button>
+        </div>
+    </div>
+
+    <!-- Post-Login Dialog -->
     <div id="postLoginDialog" class="dialogOverlay">
         <div class="dialogBox">
-            <h2>Tools & Links</h2>
-            <button onclick="window.open('https://github.com/BINOD-XD/Ip-Tracker.git')">IP Tracker</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2000')">Telegram Banning</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2075')">Payload Bind</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2097')">Crack Login Page</button>
-            <button onclick="window.open('https://youtu.be/TRLLKGQXyo0?feature=shared')">OTP Bypass</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2162')">SMS Hack</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2286')">PC Rat</button>
-            <button onclick="window.open('https://t.me/zalimhackerschat/2330')">Instagram Hack</button>
+            <h2>Choose an Option</h2>
+            <div class="scrollableBox">
+                <button onclick="window.open('https://github.com/BINOD-XD/Ip-Tracker.git')">IP Tracker</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2000')">Telegram Banning</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2075')">Payload Baind</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2097')">Crack login page</button>
+                <button onclick="window.open('https://youtu.be/TRLLKGQXyo0?feature=shared')">OTP Bypass</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2162')">SMS Hack Link</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2286')">PC Rat</button>
+                <button onclick="window.open('https://t.me/zalimhackerschat/2330')">Instagram Hack</button>
+            </div>
             <button onclick="closePostLoginDialog()">Close</button>
         </div>
     </div>
 
     <script>
-        let timeLeft = 60;
-
-        function startTimer() {
-            let countdown = document.getElementById("countdown");
-            let timerInterval = setInterval(() => {
-                timeLeft--;
-                countdown.innerText = timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Time is up! Redirecting...");
-                    window.history.back();
-                }
-            }, 1000);
-        }
-
         function checkPassword() {
             let password = document.getElementById("password").value;
-            let correctPassword = "TF"; 
+            let errorMsg = document.getElementById("errorMsg");
+            let correctPassword = "TF";
 
             if (password === correctPassword) {
-                clearInterval(timerInterval);
-                document.getElementById("loginDialog").classList.remove("show");
-                setTimeout(() => {
+                errorMsg.style.color = "green";
+                errorMsg.innerText = "Login Successful!";
+                
+                setTimeout(() => { 
+                    document.getElementById("loginDialog").classList.remove("show"); 
                     document.getElementById("postLoginDialog").classList.add("show");
                 }, 1000);
             } else {
-                alert("Wrong Password!");
+                errorMsg.style.color = "red";
+                errorMsg.innerText = "Wrong Password!";
             }
+        }
+
+        function openWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.add("show");
+        }
+
+        function closeWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.remove("show");
         }
 
         function closePostLoginDialog() {
             document.getElementById("postLoginDialog").classList.remove("show");
+        }
+
+        function startTimer() {
+            let timeLeft = 60;
+            let timerDisplay = document.getElementById("timer");
+
+            let timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    window.history.back();
+                } else {
+                    timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+                    timeLeft--;
+                }
+            }, 1000);
         }
     </script>
 
