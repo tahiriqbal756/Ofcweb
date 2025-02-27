@@ -44,33 +44,22 @@
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5); 
         }
 
-        /* Input Field */
-        .dialogBox input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        /* Input Fields */
+        .dialogBox input { 
+            width: 100%; padding: 10px; margin-bottom: 10px; 
+            border: 1px solid #ddd; border-radius: 5px; 
+        }
 
-        /* Animated Login Button */
-        .dialogBox button { 
+        /* Animated Buttons */
+        .dialogBox button, .btn { 
             width: 100%; padding: 10px; 
             background: linear-gradient(45deg, #ff416c, #ff4b2b); 
-            color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; 
+            color: white; border: none; border-radius: 5px; cursor: pointer; 
+            font-size: 16px; 
             animation: pulse 1.5s infinite, buttonGlow 2s infinite alternate; 
         }
 
-        .dialogBox button:hover { background: #ff1e56; }
-
-        /* Buttons Layout */
-        #buttonDialog .row { display: flex; justify-content: center; margin-bottom: 10px; }
-        
-        /* Animated Buttons */
-        .btn { 
-            padding: 15px 30px; margin: 5px; 
-            border: none; background: linear-gradient(45deg, #1e90ff, #00bfff); 
-            color: white; border-radius: 5px; cursor: pointer; font-size: 16px; transition: 0.3s; 
-            animation: buttonGlow 2s infinite alternate; 
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn:hover { background: #0073e6; }
+        .dialogBox button:hover, .btn:hover { background: #ff1e56; }
 
         /* Show Dialog */
         .show { visibility: visible !important; opacity: 1 !important; }
@@ -91,35 +80,22 @@
             <h2>Enter Password</h2>
             <input type="password" id="password" placeholder="Enter Password">
             <button onclick="checkPassword()">Login</button>
+            <button class="btn" onclick="openWhatsAppDialog()">WhatsApp Contact</button>
             <p id="errorMsg"></p>
         </div>
     </div>
 
-    <!-- Buttons Dialog (Hidden Before Login) -->
-    <div id="buttonDialog" class="dialogOverlay">
+    <!-- WhatsApp Contact Dialog -->
+    <div id="whatsappDialog" class="dialogOverlay">
         <div class="dialogBox">
-            <h2>Welcome! Choose an Option</h2>
-            <div class="row">
-                <a href="#" class="btn" onclick="openCameraHackDialog()">CAMERA HACK</a>
-                <a href="https://t.me/zalimhackerschat/3122?single" class="btn">X Hunter</a>
-            </div>
-            <div class="row">
-                <a href="https://t.me/zalimhackerschat/2443" class="btn">HAMODY RAT</a>
-            </div>
-            <div class="row">
-                <a href="https://t.me/zalimhackerschat/1898" class="btn">Gallery Hack</a>
-                <a href="#" class="btn">More...</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Camera Hack Dialog -->
-    <div id="cameraHackDialog" class="dialogOverlay">
-        <div class="dialogBox">
-            <h2>Camera Hack Options</h2>
-            <a href="https://t.me/zalimhackerschat/4811" class="btn">SETUP VIDEO</a>
-            <a href="https://t.me/zalimhackers01/777" class="btn">TOOL LINK</a>
-            <button onclick="closeCameraHackDialog()">Close</button>
+            <h2>Contact via WhatsApp</h2>
+            <input type="text" id="firstName" placeholder="First Name">
+            <input type="text" id="lastName" placeholder="Last Name">
+            <input type="tel" id="phone" placeholder="Phone Number">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="message" placeholder="Your Message">
+            <button onclick="sendWhatsAppMessage()">Send to WhatsApp</button>
+            <button onclick="closeWhatsAppDialog()">Close</button>
         </div>
     </div>
 
@@ -133,10 +109,8 @@
                 errorMsg.style.color = "green";
                 errorMsg.innerText = "Login Successful!";
                 
-                // Hide Login Dialog & Show Buttons Dialog
                 setTimeout(() => { 
                     document.getElementById("loginDialog").classList.remove("show"); 
-                    document.getElementById("buttonDialog").classList.add("show"); 
                 }, 1000);
             } else {
                 errorMsg.style.color = "red";
@@ -144,12 +118,32 @@
             }
         }
 
-        function openCameraHackDialog() {
-            document.getElementById("cameraHackDialog").classList.add("show");
+        function openWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.add("show");
         }
 
-        function closeCameraHackDialog() {
-            document.getElementById("cameraHackDialog").classList.remove("show");
+        function closeWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.remove("show");
+        }
+
+        function sendWhatsAppMessage() {
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            let message = document.getElementById("message").value;
+
+            if (firstName && lastName && phone && email && message) {
+                let whatsappNumber = "923321709972";
+                let text = `*New Contact Request:*\n\n👤 *Name:* ${firstName} ${lastName}\n📞 *Phone:* ${phone}\n📧 *Email:* ${email}\n💬 *Message:* ${message}`;
+
+                let whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+                window.open(whatsappURL, "_blank");
+
+                closeWhatsAppDialog();
+            } else {
+                alert("Please fill all fields before sending!");
+            }
         }
     </script>
 
