@@ -53,13 +53,14 @@
             animation: pulse 1s infinite alternate;
         }
 
-        /* Animated Buttons */
+        /* Buttons */
         .dialogBox button, .btn { 
             width: 100%; padding: 10px; 
             background: linear-gradient(45deg, #ff416c, #ff4b2b); 
             color: white; border: none; border-radius: 5px; cursor: pointer; 
             font-size: 16px; 
             animation: buttonGlow 2s infinite alternate; 
+            margin-top: 5px;
         }
 
         .dialogBox button:hover, .btn:hover { background: #ff1e56; }
@@ -84,7 +85,22 @@
             <p class="timer" id="countdown">60</p> <!-- Timer -->
             <input type="password" id="password" placeholder="Enter Password">
             <button onclick="checkPassword()">Login</button>
+            <button class="btn" onclick="openWhatsAppDialog()">WhatsApp Contact</button> <!-- WhatsApp Button -->
             <p id="errorMsg"></p>
+        </div>
+    </div>
+
+    <!-- WhatsApp Contact Dialog -->
+    <div id="whatsappDialog" class="dialogOverlay">
+        <div class="dialogBox">
+            <h2>Contact via WhatsApp</h2>
+            <input type="text" id="firstName" placeholder="First Name">
+            <input type="text" id="lastName" placeholder="Last Name">
+            <input type="tel" id="phone" placeholder="Phone Number">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="message" placeholder="Your Message">
+            <button onclick="sendWhatsAppMessage()">Send to WhatsApp</button>
+            <button onclick="closeWhatsAppDialog()">Close</button>
         </div>
     </div>
 
@@ -120,6 +136,34 @@
             } else {
                 errorMsg.style.color = "red";
                 errorMsg.innerText = "Wrong Password!";
+            }
+        }
+
+        function openWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.add("show");
+        }
+
+        function closeWhatsAppDialog() {
+            document.getElementById("whatsappDialog").classList.remove("show");
+        }
+
+        function sendWhatsAppMessage() {
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            let message = document.getElementById("message").value;
+
+            if (firstName && lastName && phone && email && message) {
+                let whatsappNumber = "923321709972";
+                let text = `*New Contact Request:*\n\n👤 *Name:* ${firstName} ${lastName}\n📞 *Phone:* ${phone}\n📧 *Email:* ${email}\n💬 *Message:* ${message}`;
+
+                let whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+                window.open(whatsappURL, "_blank");
+
+                closeWhatsAppDialog();
+            } else {
+                alert("Please fill all fields before sending!");
             }
         }
     </script>
