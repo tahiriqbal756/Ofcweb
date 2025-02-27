@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Secure Login</title>
+    <title>Secure Login</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -19,7 +19,7 @@
             flex-direction: column; 
         }
 
-        /* Full Screen Dialog Background */
+        /* Dialog Overlay */
         .dialogOverlay { 
             position: fixed; 
             top: 0; left: 0; 
@@ -45,44 +45,29 @@
         }
 
         /* Input Field */
-        .dialogBox input { 
-            width: 100%; 
-            padding: 10px; 
-            margin-bottom: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 5px; 
-        }
+        .dialogBox input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
 
         /* Animated Login Button */
         .dialogBox button { 
-            width: 100%; 
-            padding: 10px; 
+            width: 100%; padding: 10px; 
             background: linear-gradient(45deg, #ff416c, #ff4b2b); 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-size: 16px; 
+            color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; 
             animation: pulse 1.5s infinite, buttonGlow 2s infinite alternate; 
         }
 
         .dialogBox button:hover { background: #ff1e56; }
 
-        /* Buttons Layout Inside Dialog */
+        /* Buttons Layout */
         #buttonDialog .row { display: flex; justify-content: center; margin-bottom: 10px; }
         
         /* Animated Buttons */
         .btn { 
-            padding: 15px 30px; 
-            margin: 5px; 
-            border: none; 
-            background: linear-gradient(45deg, #1e90ff, #00bfff); 
-            color: white; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            transition: 0.3s; 
+            padding: 15px 30px; margin: 5px; 
+            border: none; background: linear-gradient(45deg, #1e90ff, #00bfff); 
+            color: white; border-radius: 5px; cursor: pointer; font-size: 16px; transition: 0.3s; 
             animation: buttonGlow 2s infinite alternate; 
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn:hover { background: #0073e6; }
@@ -90,42 +75,11 @@
         /* Show Dialog */
         .show { visibility: visible !important; opacity: 1 !important; }
 
-        /* Shake Animation */
-        .shake { animation: shake 0.3s ease-in-out; }
-
-        /* Keyframe Animations */
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes buttonGlow {
-            0% { box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3); }
-            100% { box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); }
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        @keyframes backgroundAnimation {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        /* Animations */
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes buttonGlow { 0% { box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3); } 100% { box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); } }
+        @keyframes gradientAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes backgroundAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
     </style>
 </head>
@@ -144,21 +98,28 @@
     <!-- Buttons Dialog (Hidden Before Login) -->
     <div id="buttonDialog" class="dialogOverlay">
         <div class="dialogBox">
-            <h2>Welcome!</h2>
+            <h2>Welcome! Choose an Option</h2>
             <div class="row">
-                <button class="btn">Button</button>
-                <button class="btn">Button</button>
+                <a href="#" class="btn" onclick="openCameraHackDialog()">CAMERA HACK</a>
+                <a href="https://www.google.com" class="btn">Google</a>
             </div>
             <div class="row">
-                <button class="btn">Button</button>
+                <a href="https://www.youtube.com" class="btn">YouTube</a>
             </div>
             <div class="row">
-                <button class="btn">Button</button>
-                <button class="btn">Button</button>
+                <a href="https://www.facebook.com" class="btn">Facebook</a>
+                <a href="https://www.instagram.com" class="btn">Instagram</a>
             </div>
-            <div class="row">
-                <button class="btn">Button</button>
-            </div>
+        </div>
+    </div>
+
+    <!-- Camera Hack Dialog -->
+    <div id="cameraHackDialog" class="dialogOverlay">
+        <div class="dialogBox">
+            <h2>Camera Hack Options</h2>
+            <a href="https://t.me/zalimhackerschat/4811" class="btn">SETUP VIDEO</a>
+            <a href="https://t.me/zalimhackers01/777" class="btn">TOOL LINK</a>
+            <button onclick="closeCameraHackDialog()">Close</button>
         </div>
     </div>
 
@@ -180,9 +141,15 @@
             } else {
                 errorMsg.style.color = "red";
                 errorMsg.innerText = "Wrong Password!";
-                document.querySelector(".dialogBox").classList.add("shake");
-                setTimeout(() => { document.querySelector(".dialogBox").classList.remove("shake"); }, 500);
             }
+        }
+
+        function openCameraHackDialog() {
+            document.getElementById("cameraHackDialog").classList.add("show");
+        }
+
+        function closeCameraHackDialog() {
+            document.getElementById("cameraHackDialog").classList.remove("show");
         }
     </script>
 
