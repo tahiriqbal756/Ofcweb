@@ -44,10 +44,13 @@
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5); 
         }
 
-        /* Input Fields */
-        .dialogBox input { 
-            width: 100%; padding: 10px; margin-bottom: 10px; 
-            border: 1px solid #ddd; border-radius: 5px; 
+        /* Timer */
+        .timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+            margin-bottom: 10px;
+            animation: pulse 1s infinite alternate;
         }
 
         /* Animated Buttons */
@@ -56,7 +59,7 @@
             background: linear-gradient(45deg, #ff416c, #ff4b2b); 
             color: white; border: none; border-radius: 5px; cursor: pointer; 
             font-size: 16px; 
-            animation: pulse 1.5s infinite, buttonGlow 2s infinite alternate; 
+            animation: buttonGlow 2s infinite alternate; 
         }
 
         .dialogBox button:hover, .btn:hover { background: #ff1e56; }
@@ -67,82 +70,56 @@
         /* Animations */
         @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes buttonGlow { 0% { box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3); } 100% { box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); } }
-        @keyframes gradientAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
         @keyframes backgroundAnimation { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
 
     </style>
 </head>
-<body onload="showLoginDialog()">
+<body onload="startTimer()">
 
     <!-- Login Dialog -->
     <div id="loginDialog" class="dialogOverlay show">
         <div class="dialogBox">
             <h2>Enter Password</h2>
+            <p class="timer" id="countdown">60</p> <!-- Timer -->
             <input type="password" id="password" placeholder="Enter Password">
             <button onclick="checkPassword()">Login</button>
-            <button class="btn" onclick="openWhatsAppDialog()">WhatsApp Contact</button>
             <p id="errorMsg"></p>
         </div>
     </div>
 
-    <!-- WhatsApp Contact Dialog -->
-    <div id="whatsappDialog" class="dialogOverlay">
-        <div class="dialogBox">
-            <h2>Contact via WhatsApp</h2>
-            <input type="text" id="firstName" placeholder="First Name">
-            <input type="text" id="lastName" placeholder="Last Name">
-            <input type="tel" id="phone" placeholder="Phone Number">
-            <input type="email" id="email" placeholder="Email">
-            <input type="text" id="message" placeholder="Your Message">
-            <button onclick="sendWhatsAppMessage()">Send to WhatsApp</button>
-            <button onclick="closeWhatsAppDialog()">Close</button>
-        </div>
-    </div>
-
     <script>
+        let timeLeft = 60; // 1-minute timer
+
+        function startTimer() {
+            let countdown = document.getElementById("countdown");
+            let timerInterval = setInterval(() => {
+                timeLeft--;
+                countdown.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Redirecting...");
+                    window.history.back(); // User will go back
+                }
+            }, 1000);
+        }
+
         function checkPassword() {
             let password = document.getElementById("password").value;
             let errorMsg = document.getElementById("errorMsg");
-            let correctPassword = "TF"; // <-- Change this password if needed
+            let correctPassword = "TF"; 
 
             if (password === correctPassword) {
                 errorMsg.style.color = "green";
                 errorMsg.innerText = "Login Successful!";
-                
+                clearInterval(timerInterval);
                 setTimeout(() => { 
                     document.getElementById("loginDialog").classList.remove("show"); 
                 }, 1000);
             } else {
                 errorMsg.style.color = "red";
                 errorMsg.innerText = "Wrong Password!";
-            }
-        }
-
-        function openWhatsAppDialog() {
-            document.getElementById("whatsappDialog").classList.add("show");
-        }
-
-        function closeWhatsAppDialog() {
-            document.getElementById("whatsappDialog").classList.remove("show");
-        }
-
-        function sendWhatsAppMessage() {
-            let firstName = document.getElementById("firstName").value;
-            let lastName = document.getElementById("lastName").value;
-            let phone = document.getElementById("phone").value;
-            let email = document.getElementById("email").value;
-            let message = document.getElementById("message").value;
-
-            if (firstName && lastName && phone && email && message) {
-                let whatsappNumber = "923321709972";
-                let text = `*New Contact Request:*\n\n👤 *Name:* ${firstName} ${lastName}\n📞 *Phone:* ${phone}\n📧 *Email:* ${email}\n💬 *Message:* ${message}`;
-
-                let whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-                window.open(whatsappURL, "_blank");
-
-                closeWhatsAppDialog();
-            } else {
-                alert("Please fill all fields before sending!");
             }
         }
     </script>
